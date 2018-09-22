@@ -15,12 +15,18 @@ github: JessyRakesh-Armstrong
 """
 
 
-def tokenize_comment(comment):
+def normalize(comment):
+    """This is where all the normalizing happens"""
+    norm_str = tokenize_comment(comment)
+    return norm_str
+
+
+def tokenize_comment(raw_str):
     """
     Uses the nltk commment to tokenize and return that as a list
     """
-    tok_comment = word_tokenize(comment)
-    return tok_comment
+    tok_comments = word_tokenize(raw_str)
+    return tok_comments
 
 
 def main():
