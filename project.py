@@ -62,6 +62,8 @@ def create_tdidf_vec(train, test):
 
 def get_mdl(vec, y):
     """
+    create logistic regression model using features
+    IType: vec: list o f
 
     """
 
@@ -74,7 +76,7 @@ def get_mdl(vec, y):
     ratio = np.log(pr(vec, 1, y) / pr(vec, 0, y))
     model = LogisticRegression(C=4, dual=True)
     nb = vec.multiply(ratio)
-    return model .fit(nb, y), ratio
+    return model.fit(nb, y), ratio
 
 
 def train_model():
@@ -106,8 +108,9 @@ def train_model():
     return preds
 
 
-def predict_csv(predictions):
+def predict_df(predictions):
     """
+    Itype: Numpy nd array
     Predict csv test file by using train model
     """
     train_df, test_df = read_csv('data/train.csv', 'data/test.csv')
@@ -119,11 +122,10 @@ def predict_csv(predictions):
         'insult',
         'identity_hate',
     ]
-    # predicted_df = pd.DataFrame(data=predictions, columns=labels)
-    classified_preds = np.zeros(len(test_df), len(labels))
+    classified_preds = np.zeros((len(test_df), len(labels)))
     for row in range(len(classified_preds)):
         for col in range(len(labels)):
-            if classified_preds[row][col] > .5:
+            if predictions[row][col] > .5:
                 classified_preds[row][col] = 1
             else:
                 classified_preds[row][col] = 0
@@ -131,10 +133,14 @@ def predict_csv(predictions):
     return predicted_df
 
 
-def main():
+def get_results(csv1):
+    print('------Metrics------')
 
-    tr = train_model()
-    prediction = predict_csv(tr)
+
+def main():
+    """Main function"""
+    model_results = train_model()
+    prediction = predict_df(model_results)
     prediction.to_csv(
         "classfied_comments.csv",
         encoding='utf-8',
